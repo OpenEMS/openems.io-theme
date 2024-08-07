@@ -1,0 +1,29 @@
+name: Build openems.io-theme
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - main
+      - develop
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: build-uibundle
+        run: npm ci && gulp lint && gulp bundle
+
+      - name: Save build-artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: java-build-artifacts
+          path: |
+            build/ui-bundle.zip
