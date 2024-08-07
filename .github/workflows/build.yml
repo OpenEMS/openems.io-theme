@@ -24,6 +24,5 @@ jobs:
       - name: Save build-artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: java-build-artifacts
-          path: |
-            build/ui-bundle.zip
+          compression-level: 0
+          path: build/ui-bundle.zip
