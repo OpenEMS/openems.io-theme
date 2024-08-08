@@ -1,12 +1,9 @@
-name: Build openems.io-theme
+name: Build OpenEMS.io Theme
+
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-  push:
-    branches:
-      - main
-      - develop
-  
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,7 +15,7 @@ jobs:
         with:
           node-version: '20'
 
-      - name: build-uibundle
+      - name: Build ui-bundle
         run: npm ci && gulp lint && gulp bundle
 
       - name: Save build-artifacts
