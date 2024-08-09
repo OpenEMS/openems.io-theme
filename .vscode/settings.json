@@ -1,0 +1,26 @@
+{
+    "cSpell.words": [
+        "accum",
+        "Antora",
+        "asciidoctor",
+        "clippy",
+        "cmds",
+        "cssnano",
+        "fontsource",
+        "gifsicle",
+        "gulpfile",
+        "highlightjs",
+        "jpegtran",
+        "listingblock",
+        "literalblock",
+        "mozjpeg",
+        "openems",
+        "optipng",
+        "ospath",
+        "roboto",
+        "sectionbody",
+        "stylelint",
+        "substr"
+    ],
+    "asciidoc.antora.enableAntoraSupport": true
+}

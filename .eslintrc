@@ -1,4 +1,8 @@
 {
+  "env": {
+    "es2021": true,
+    "node": true
+  },
   "extends": "standard",
   "rules": {
     "arrow-parens": ["error", "always"],

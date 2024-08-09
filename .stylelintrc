@@ -3,5 +3,11 @@
   "rules": {
     "comment-empty-line-before": null,
     "no-descending-specificity": null,
+    "property-no-unknown": [
+      true,
+      {
+        "ignoreProperties": ["print-color-adjust", "#due to deprecated gulp-stylelint"]
+      }
+    ]
   }
 }
