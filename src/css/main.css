@@ -1,4 +1,4 @@
-body.-toc aside.toc.sidebar {
+body.toc aside.toc.sidebar {
   display: none;
 }
 
@@ -34,6 +34,6 @@ body.-toc aside.toc.sidebar {
 
 @media screen and (min-width: 1216px) {
   aside.toc.sidebar {
-    flex-basis: var(--toc-width--widescreen);
+    flex-basis: var(--toc-width-widescreen);
   }
 }

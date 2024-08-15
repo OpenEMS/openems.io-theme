@@ -50,7 +50,7 @@ function createIgnoreResult (file) {
  *
  * @returns {stream} gulp file stream
  */
-export function setup () {
+function eslint () {
   linter = new ESLint()
 
   return transform(async (file, enc, cb) => {
@@ -115,7 +115,7 @@ function results (action) {
  *
  * @returns {stream} gulp file stream
  */
-export function failAfterError () {
+eslint.failAfterError = () => {
   return results((results) => {
     if (results.errorCount > 0) {
       throw new PluginError('gulp-eslint',
@@ -129,7 +129,7 @@ export function failAfterError () {
  *
  * @returns {stream} gulp file stream
  */
-export function format () {
+eslint.format = () => {
   const formatterPromise = linter.loadFormatter()
 
   return results(async (results) => {
@@ -141,3 +141,5 @@ export function format () {
     }
   })
 }
+
+export default eslint

@@ -16,7 +16,7 @@
       "property": "substr",
       "message": "Use String#slice instead."
     }],
-    "max-len": [1, 120, 2],
+    "max-len": [1, 128, 2],
     "spaced-comment": "off",
     "radix": ["error", "always"]
   }

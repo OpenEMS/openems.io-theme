@@ -36,7 +36,6 @@
     "gulp-connect": "~5.7.0",
     "gulp-imagemin": "~9.1.0",
     "gulp-postcss": "~10.0.0",
-    "gulp-stylelint": "^13.0.0",
     "gulp-uglify": "~3.0.0",
     "handlebars": "~4.7.0",
     "highlight.js": "~11.10.0",
@@ -46,6 +45,7 @@
     "imagemin-svgo": "^11.0.1",
     "js-yaml": "~4.1.0",
     "merge-stream": "~2.0.0",
+    "plugin-error": "^2.0.1",
     "postcss-calc": "~10.0.0",
     "postcss-custom-properties": "~14.0.0",
     "postcss-import": "~16.1.0",
@@ -53,8 +53,8 @@
     "prettier-eslint": "~16.3.0",
     "require-directory": "~2.1.0",
     "require-from-string": "~2.0.0",
-    "stylelint": "^13.0.0",
-    "stylelint-config-standard": "~20.0.0",
+    "stylelint": "^16.8.1",
+    "stylelint-config-standard": "~36.0.1",
     "vinyl-fs": "~3.0.0"
   },
   "scripts": {

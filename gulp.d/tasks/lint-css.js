@@ -1,6 +1,6 @@
 'use strict'
 
-import stylelint from 'gulp-stylelint'
+import stylelint from '../lib/gulp-stylelint.js'
 import vfs from 'vinyl-fs'
 
 export default (files) => (done) =>

@@ -1,13 +1,12 @@
 'use strict'
 
-import { setup, format, failAfterError } from '../lib/gulp-eslint.js'
+import lint from '../lib/gulp-eslint.js'
 import vfs from 'vinyl-fs'
 
-// Function to lint files using ESLint directly
 export default (files) => (done) =>
   vfs
     .src(files)
-    .pipe(setup())
-    .pipe(format())
-    .pipe(failAfterError())
+    .pipe(lint())
+    .pipe(lint.format())
+    .pipe(lint.failAfterError())
     .on('error', done)
