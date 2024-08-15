@@ -1,8 +1,8 @@
 import autoprefixer from 'autoprefixer'
-import browserify from 'browserify'
 import concat from 'gulp-concat'
 import cssnano from 'cssnano'
 import fs from 'fs-extra'
+import { globSync } from 'glob'
 import imagemin from 'gulp-imagemin'
 import merge from 'merge-stream'
 import ospath from 'path'
@@ -18,10 +18,9 @@ import imageminGifsicle from 'imagemin-gifsicle'
 import imageminMozjpeg from 'imagemin-mozjpeg'
 import imageminOptipng from 'imagemin-optipng'
 import imageminSvgo from 'imagemin-svgo'
-
+import webpack from 'webpack-stream'
 /**
- * TODO: remove
- * hide fs.Stats constructor is deprecated. vinyl-fs 4.0.0 is the issue
+ * TODO: remove: fs.Stats constructor is deprecated. vinyl-fs 4.0.0 is the issue
  */
 process.noDeprecation = true
 
@@ -30,14 +29,8 @@ const through = () => transform((file, enc, next) => next(null, file))
 
 const svgoOpts = {
   plugins: [
-    {
-      name: 'cleanupIds',
-      params: { preservePrefixes: ['icon-', 'view-'] },
-    },
-    {
-      name: 'preset-default',
-      params: { overrides: { removeViewBox: false, removeDesc: false } },
-    },
+    { name: 'cleanupIds', params: { preservePrefixes: ['icon-', 'view-'] } },
+    { name: 'preset-default', params: { overrides: { removeViewBox: false, removeDesc: false } } },
   ],
 }
 
@@ -48,12 +41,61 @@ function transform (transform) {
   })
 }
 
+const webpackConfigTemplate = {
+  mode: 'production',
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+          },
+        },
+      },
+    ],
+  },
+  resolve: {
+    extensions: ['.bundle.js'],
+  },
+  stats: {
+    all: false,
+  },
+}
+
+function webpackConfig (src, dest) {
+  const entries = {}
+
+  globSync(`${src}/**/*.bundle.js`).forEach((file) => {
+    const relativePath = path.relative(src, file)
+    const name = relativePath.replace(/\.bundle\.js$/, '')
+    entries[name] = path.resolve(file)
+  })
+
+  return {
+    ...webpackConfigTemplate,
+    entry: entries,
+    output: {
+      path: path.resolve(dest, '[path]'),
+      filename: '[name].js',
+    },
+  }
+}
+
+const filter = (regex) =>
+  transform((file, encoding, callback) => {
+    if (regex.test(file.path)) {
+      callback()
+    } else {
+      callback(null, file)
+    }
+  })
+
 export default (src, dest, preview) => () => {
   const opts = { base: src, cwd: src }
   const sourcemaps = preview || process.env.SOURCEMAPS === 'true'
-  const imageminPlugins = [
-    imageminGifsicle(), imageminMozjpeg(), imageminOptipng(), imageminSvgo(svgoOpts),
-  ]
+  const imageminPlugins = [imageminGifsicle(), imageminMozjpeg(), imageminOptipng(), imageminSvgo(svgoOpts)]
 
   const postcssPlugins = [
     postcssImport,
@@ -83,11 +125,9 @@ export default (src, dest, preview) => () => {
       },
     ]),
     postcssVar({ preserve: preview }),
-    preview ? postcssCalc : () => {}, // cssnano already applies postcssCalc
+    preview ? postcssCalc : () => {},
     autoprefixer,
-    preview
-      ? () => {}
-      : cssnano({ preset: 'default' }),
+    preview ? () => {} : cssnano({ preset: 'default' }),
     postcssPseudoElementFixer(),
   ]
 
@@ -95,12 +135,12 @@ export default (src, dest, preview) => () => {
     vfs.src('ui.yml', { ...opts, allowEmpty: true }),
     vfs
       .src('js/+([0-9])-*.js', { ...opts, read: false, sourcemaps })
-      .pipe(bundle(opts))
+      .pipe(filter(/.*.bundle.js/))
       .pipe(uglify({ output: { comments: /^! / } }))
       .pipe(concat('js/site.js')),
     vfs
-      .src('js/vendor/+([^.])?(.bundle).js', { ...opts, read: false })
-      .pipe(bundle(opts))
+      .src(['js/vendor/*.bundle.js'], { ...opts })
+      .pipe(webpack(webpackConfig(src, dest)))
       .pipe(uglify({ output: { comments: /^! / } })),
     vfs
       .src('js/vendor/*.min.js', opts)
@@ -109,42 +149,14 @@ export default (src, dest, preview) => () => {
       .src(['css/site.css', 'css/vendor/*.css'], { ...opts, sourcemaps })
       .pipe(postcss((file) => ({ plugins: postcssPlugins, options: { file } }))),
     vfs.src('font/*.{ttf,woff*(2)}', opts),
-    vfs.src('img/**/*.{gif,ico,jpg,png,svg}', opts)
-      .pipe(preview
-        ? through()
-        : imagemin(imageminPlugins.reduce((accum, it) => (it ? accum.concat(it) : accum), []))
-      ),
+    vfs
+      .src('img/**/*.{gif,ico,jpg,png,svg}', opts)
+      .pipe(preview ? through() : imagemin(imageminPlugins.reduce((accum, it) => (it ? accum.concat(it) : accum), []))),
     vfs.src('helpers/*.js', opts),
     vfs.src('layouts/*.hbs', opts),
     vfs.src('partials/*.hbs', opts),
     vfs.src('static/**/*[!~]', { ...opts, base: ospath.join(src, 'static'), dot: true })
   ).pipe(vfs.dest(dest, { sourcemaps: sourcemaps && '.' }))
-}
-
-function bundle ({ base: basedir, ext: bundleExt = '.bundle.js' }) {
-  return transform((file, enc, next) => {
-    if (bundleExt && file.relative.endsWith(bundleExt)) {
-      const mtimePromises = []
-      const bundlePath = file.path
-      browserify(file.relative, { basedir, detectGlobals: false })
-        .plugin('browser-pack-flat/plugin')
-        .on('file', (bundledPath) => {
-          if (bundledPath !== bundlePath) mtimePromises.push(fs.stat(bundledPath).then(({ mtime }) => mtime))
-        })
-        .bundle((bundleError, bundleBuffer) =>
-          Promise.all(mtimePromises).then((mtimes) => {
-            const newestMtime = mtimes.reduce((max, curr) => (curr > max ? curr : max), file.stat.mtime)
-            if (newestMtime > file.stat.mtime) file.stat.mtimeMs = +(file.stat.mtime = newestMtime)
-            if (bundleBuffer !== undefined) file.contents = bundleBuffer
-            next(bundleError, Object.assign(file, { path: file.path.slice(0, file.path.length - 10) + '.js' }))
-          })
-        )
-      return
-    }
-    fs.readFile(file.path, 'UTF-8').then((contents) => {
-      next(null, Object.assign(file, { contents: Buffer.from(contents) }))
-    })
-  })
 }
 
 const postcssPseudoElementFixer = () => {
