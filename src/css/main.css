@@ -39,7 +39,7 @@ body.toc aside.toc.sidebar {
 }
 
 .gitlink {
-  background: url(../img/github.svg) no-repeat 50% 45%;
+  background: url("../img/github.svg") no-repeat 50% 45%;
   background-size: 50%;
   display: block;
   height: 2.5rem;
