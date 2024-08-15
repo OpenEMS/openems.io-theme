@@ -37,3 +37,12 @@ body.toc aside.toc.sidebar {
     flex-basis: var(--toc-width-widescreen);
   }
 }
+
+.gitlink {
+  background: url(../img/github.svg) no-repeat 50% 45%;
+  background-size: 50%;
+  display: block;
+  height: 2.5rem;
+  padding: 0;
+  width: 2.5rem;
+}
