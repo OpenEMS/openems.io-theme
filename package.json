@@ -42,10 +42,6 @@
     "gulp-uglify": "~3.0.0",
     "handlebars": "~4.7.0",
     "highlight.js": "~11.10.0",
-    "imagemin-gifsicle": "^7.0.0",
-    "imagemin-mozjpeg": "^10.0.0",
-    "imagemin-optipng": "^8.0.0",
-    "imagemin-svgo": "^11.0.1",
     "js-yaml": "~4.1.0",
     "merge-stream": "~2.0.0",
     "plugin-error": "^2.0.1",
@@ -67,5 +63,13 @@
     "lint": "gulp lint",
     "gulp": "gulp",
     "bundle": "gulp bundle"
+  },
+  "overrides": {
+    "gulp-imagemin": {
+      "imagemin-gifsicle": "^7.0.0",
+      "imagemin-mozjpeg": "^10.0.0",
+      "imagemin-optipng": "^8.0.0",
+      "imagemin-svgo": "^11.0.1"
+    }
   }
 }
