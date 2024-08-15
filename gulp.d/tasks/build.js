@@ -29,7 +29,7 @@ const through = () => transform((file, enc, next) => next(null, file))
 
 const svgoOpts = {
   plugins: [
-    { name: 'cleanupIds', params: { preservePrefixes: ['icon-', 'view-'] } },
+    { name: 'cleanupIDs', params: { preservePrefixes: ['icon-', 'view-'] } },
     { name: 'preset-default', params: { overrides: { removeViewBox: false, removeDesc: false } } },
   ],
 }
@@ -131,16 +131,18 @@ export default (src, dest, preview) => () => {
     postcssPseudoElementFixer(),
   ]
 
+  const webpackConf = webpackConfig(src, dest)
+
   return merge(
     vfs.src('ui.yml', { ...opts, allowEmpty: true }),
     vfs
-      .src('js/+([0-9])-*.js', { ...opts, read: false, sourcemaps })
-      .pipe(filter(/.*.bundle.js/))
+      .src('js/+([0-9])-*.js', { ...opts, sourcemaps })
+      .pipe(filter(/.bundle.js$/))
       .pipe(uglify({ output: { comments: /^! / } }))
       .pipe(concat('js/site.js')),
     vfs
-      .src(['js/vendor/*.bundle.js'], { ...opts })
-      .pipe(webpack(webpackConfig(src, dest)))
+      .src(['js/vendor/+([^.])?(.bundle).js', 'js/.*.bundle.js'], { ...opts, read: false })
+      .pipe(webpack(webpackConf))
       .pipe(uglify({ output: { comments: /^! / } })),
     vfs
       .src('js/vendor/*.min.js', opts)
