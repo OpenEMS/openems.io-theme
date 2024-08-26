@@ -1,12 +1,12 @@
 'use strict'
 
-const log = require('fancy-log')
-const PluginError = require('plugin-error')
-const prettierEslint = require('prettier-eslint')
-const { Transform } = require('stream')
+import log from 'fancy-log'
+import PluginError from 'plugin-error'
+import prettierEslint from 'prettier-eslint'
+import { Transform } from 'stream'
 const map = (transform) => new Transform({ objectMode: true, transform })
 
-module.exports = () => {
+export default () => {
   const report = { changed: 0, unchanged: 0 }
   return map(format).on('finish', () => {
     if (report.changed > 0) {

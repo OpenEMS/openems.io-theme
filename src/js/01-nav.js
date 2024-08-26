@@ -1,23 +1,23 @@
 ;(function () {
   'use strict'
 
-  var SECT_CLASS_RX = /^sect(\d)$/
+  const SECT_CLASS_RX = /^sect(\d)$/
 
-  var navContainer = document.querySelector('.nav-container')
-  var navToggle = document.querySelector('.nav-toggle')
+  const navContainer = document.querySelector('.nav-container')
+  const navToggle = document.querySelector('.nav-toggle')
   if (!navContainer && (!navToggle || (navToggle.hidden = true))) return
-  var nav = navContainer.querySelector('.nav')
-  var navMenuToggle = navContainer.querySelector('.nav-menu-toggle')
+  const nav = navContainer.querySelector('.nav')
+  const navMenuToggle = navContainer.querySelector('.nav-menu-toggle')
 
   navToggle.addEventListener('click', showNav)
   navContainer.addEventListener('click', trapEvent)
 
-  var menuPanel = navContainer.querySelector('[data-panel=menu]')
+  const menuPanel = navContainer.querySelector('[data-panel=menu]')
   if (!menuPanel) return
-  var explorePanel = navContainer.querySelector('[data-panel=explore]')
+  const explorePanel = navContainer.querySelector('[data-panel=explore]')
 
-  var currentPageItem = menuPanel.querySelector('.is-current-page')
-  var originalPageItem = currentPageItem
+  let currentPageItem = menuPanel.querySelector('.is-current-page')
+  const originalPageItem = currentPageItem
   if (currentPageItem) {
     activateCurrentPath(currentPageItem)
     scrollItemToMidpoint(menuPanel, currentPageItem.querySelector('.nav-link'))
@@ -26,9 +26,9 @@
   }
 
   find(menuPanel, '.nav-item-toggle').forEach(function (btn) {
-    var li = btn.parentElement
+    const li = btn.parentElement
     btn.addEventListener('click', toggleActive.bind(li))
-    var navItemSpan = findNextElement(btn, '.nav-text')
+    const navItemSpan = findNextElement(btn, '.nav-text')
     if (navItemSpan) {
       navItemSpan.style.cursor = 'pointer'
       navItemSpan.addEventListener('click', toggleActive.bind(li))
@@ -38,7 +38,7 @@
   if (navMenuToggle && menuPanel.querySelector('.nav-item-toggle')) {
     navMenuToggle.style.display = ''
     navMenuToggle.addEventListener('click', function () {
-      var collapse = !this.classList.toggle('is-active')
+      const collapse = !this.classList.toggle('is-active')
       find(menuPanel, '.nav-item > .nav-item-toggle').forEach(function (btn) {
         collapse ? btn.parentElement.classList.remove('is-active') : btn.parentElement.classList.add('is-active')
       })
@@ -66,18 +66,18 @@
   })
 
   function onHashChange () {
-    var navLink
-    var hash = window.location.hash
+    let navLink
+    let hash = window.location.hash
     if (hash) {
       if (hash.indexOf('%')) hash = decodeURIComponent(hash)
       navLink = menuPanel.querySelector('.nav-link[href="' + hash + '"]')
       if (!navLink) {
-        var targetNode = document.getElementById(hash.slice(1))
+        const targetNode = document.getElementById(hash.slice(1))
         if (targetNode) {
-          var current = targetNode
-          var ceiling = document.querySelector('article.doc')
+          let current = targetNode
+          const ceiling = document.querySelector('article.doc')
           while ((current = current.parentNode) && current !== ceiling) {
-            var id = current.id
+            let id = current.id
             // NOTE: look for section heading
             if (!id && (id = SECT_CLASS_RX.test(current.className))) id = (current.firstElementChild || {}).id
             if (id && (navLink = menuPanel.querySelector('.nav-link[href="#' + id + '"]'))) break
@@ -85,7 +85,7 @@
         }
       }
     }
-    var navItem
+    let navItem
     if (navLink) {
       navItem = navLink.parentNode
     } else if (originalPageItem) {
@@ -109,8 +109,8 @@
   }
 
   function activateCurrentPath (navItem) {
-    var ancestorClasses
-    var ancestor = navItem.parentNode
+    let ancestorClasses
+    let ancestor = navItem.parentNode
     while (!(ancestorClasses = ancestor.classList).contains('nav-menu')) {
       if (ancestor.tagName === 'LI' && ancestorClasses.contains('nav-item')) {
         ancestorClasses.add('is-active', 'is-current-path')
@@ -122,10 +122,10 @@
 
   function toggleActive () {
     if (this.classList.toggle('is-active')) {
-      var padding = parseFloat(window.getComputedStyle(this).marginTop)
-      var rect = this.getBoundingClientRect()
-      var menuPanelRect = menuPanel.getBoundingClientRect()
-      var overflowY = (rect.bottom - menuPanelRect.top - menuPanelRect.height + padding).toFixed()
+      const padding = parseFloat(window.getComputedStyle(this).marginTop)
+      const rect = this.getBoundingClientRect()
+      const menuPanelRect = menuPanel.getBoundingClientRect()
+      const overflowY = (rect.bottom - menuPanelRect.top - menuPanelRect.height + padding).toFixed()
       if (overflowY > 0) menuPanel.scrollTop += Math.min((rect.top - menuPanelRect.top - padding).toFixed(), overflowY)
     }
   }
@@ -133,19 +133,19 @@
   function showNav (e) {
     if (navToggle.classList.contains('is-active')) return hideNav(e)
     trapEvent(e)
-    var html = document.documentElement
+    const html = document.documentElement
     html.classList.add('is-clipped--nav')
     navToggle.classList.add('is-active')
     navContainer.classList.add('is-active')
-    var bounds = nav.getBoundingClientRect()
-    var expectedHeight = window.innerHeight - Math.round(bounds.top)
+    const bounds = nav.getBoundingClientRect()
+    const expectedHeight = window.innerHeight - Math.round(bounds.top)
     if (Math.round(bounds.height) !== expectedHeight) nav.style.height = expectedHeight + 'px'
     html.addEventListener('click', hideNav)
   }
 
   function hideNav (e) {
     trapEvent(e)
-    var html = document.documentElement
+    const html = document.documentElement
     html.classList.remove('is-clipped--nav')
     navToggle.classList.remove('is-active')
     navContainer.classList.remove('is-active')
@@ -157,9 +157,9 @@
   }
 
   function scrollItemToMidpoint (panel, el) {
-    var rect = panel.getBoundingClientRect()
-    var effectiveHeight = rect.height
-    var navStyle = window.getComputedStyle(nav)
+    const navStyle = window.getComputedStyle(nav)
+    const rect = panel.getBoundingClientRect()
+    let effectiveHeight = rect.height
     if (navStyle.position === 'sticky') effectiveHeight -= rect.top - parseFloat(navStyle.top)
     panel.scrollTop = Math.max(0, (el.getBoundingClientRect().height - effectiveHeight) * 0.5 + el.offsetTop)
   }
@@ -169,7 +169,7 @@
   }
 
   function findNextElement (from, selector) {
-    var el = from.nextElementSibling
+    const el = from.nextElementSibling
     return el && selector ? el[el.matches ? 'matches' : 'msMatchesSelector'](selector) && el : el
   }
 })()

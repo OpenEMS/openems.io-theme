@@ -1,43 +1,76 @@
-;(function () {
-  'use strict'
+import hljs from 'highlight.js/lib/core'
+import asciidoc from 'highlight.js/lib/languages/asciidoc'
+import bash from 'highlight.js/lib/languages/bash'
+import clojure from 'highlight.js/lib/languages/clojure'
+import cpp from 'highlight.js/lib/languages/cpp'
+import csharp from 'highlight.js/lib/languages/csharp'
+import css from 'highlight.js/lib/languages/css'
+import diff from 'highlight.js/lib/languages/diff'
+import dockerfile from 'highlight.js/lib/languages/dockerfile'
+import elixir from 'highlight.js/lib/languages/elixir'
+import go from 'highlight.js/lib/languages/go'
+import groovy from 'highlight.js/lib/languages/groovy'
+import haskell from 'highlight.js/lib/languages/haskell'
+import java from 'highlight.js/lib/languages/java'
+import javascript from 'highlight.js/lib/languages/javascript'
+import json from 'highlight.js/lib/languages/json'
+import julia from 'highlight.js/lib/languages/julia'
+import kotlin from 'highlight.js/lib/languages/kotlin'
+import lua from 'highlight.js/lib/languages/lua'
+import markdown from 'highlight.js/lib/languages/markdown'
+import nix from 'highlight.js/lib/languages/nix'
+import none from 'highlight.js/lib/languages/plaintext'
+import objectivec from 'highlight.js/lib/languages/objectivec'
+import perl from 'highlight.js/lib/languages/perl'
+import php from 'highlight.js/lib/languages/php'
+import properties from 'highlight.js/lib/languages/properties'
+import puppet from 'highlight.js/lib/languages/puppet'
+import python from 'highlight.js/lib/languages/python'
+import ruby from 'highlight.js/lib/languages/ruby'
+import rust from 'highlight.js/lib/languages/rust'
+import scala from 'highlight.js/lib/languages/scala'
+import shell from 'highlight.js/lib/languages/shell'
+import sql from 'highlight.js/lib/languages/sql'
+import swift from 'highlight.js/lib/languages/swift'
+import xml from 'highlight.js/lib/languages/xml'
+import yaml from 'highlight.js/lib/languages/yaml'
 
-  var hljs = require('highlight.js/lib/highlight')
-  hljs.registerLanguage('asciidoc', require('highlight.js/lib/languages/asciidoc'))
-  hljs.registerLanguage('bash', require('highlight.js/lib/languages/bash'))
-  hljs.registerLanguage('clojure', require('highlight.js/lib/languages/clojure'))
-  hljs.registerLanguage('cpp', require('highlight.js/lib/languages/cpp'))
-  hljs.registerLanguage('cs', require('highlight.js/lib/languages/cs'))
-  hljs.registerLanguage('css', require('highlight.js/lib/languages/css'))
-  hljs.registerLanguage('diff', require('highlight.js/lib/languages/diff'))
-  hljs.registerLanguage('dockerfile', require('highlight.js/lib/languages/dockerfile'))
-  hljs.registerLanguage('elixir', require('highlight.js/lib/languages/elixir'))
-  hljs.registerLanguage('go', require('highlight.js/lib/languages/go'))
-  hljs.registerLanguage('groovy', require('highlight.js/lib/languages/groovy'))
-  hljs.registerLanguage('haskell', require('highlight.js/lib/languages/haskell'))
-  hljs.registerLanguage('java', require('highlight.js/lib/languages/java'))
-  hljs.registerLanguage('javascript', require('highlight.js/lib/languages/javascript'))
-  hljs.registerLanguage('json', require('highlight.js/lib/languages/json'))
-  hljs.registerLanguage('julia', require('highlight.js/lib/languages/julia'))
-  hljs.registerLanguage('kotlin', require('highlight.js/lib/languages/kotlin'))
-  hljs.registerLanguage('lua', require('highlight.js/lib/languages/lua'))
-  hljs.registerLanguage('markdown', require('highlight.js/lib/languages/markdown'))
-  hljs.registerLanguage('nix', require('highlight.js/lib/languages/nix'))
-  hljs.registerLanguage('none', require('highlight.js/lib/languages/plaintext'))
-  hljs.registerLanguage('objectivec', require('highlight.js/lib/languages/objectivec'))
-  hljs.registerLanguage('perl', require('highlight.js/lib/languages/perl'))
-  hljs.registerLanguage('php', require('highlight.js/lib/languages/php'))
-  hljs.registerLanguage('properties', require('highlight.js/lib/languages/properties'))
-  hljs.registerLanguage('puppet', require('highlight.js/lib/languages/puppet'))
-  hljs.registerLanguage('python', require('highlight.js/lib/languages/python'))
-  hljs.registerLanguage('ruby', require('highlight.js/lib/languages/ruby'))
-  hljs.registerLanguage('rust', require('highlight.js/lib/languages/rust'))
-  hljs.registerLanguage('scala', require('highlight.js/lib/languages/scala'))
-  hljs.registerLanguage('shell', require('highlight.js/lib/languages/shell'))
-  hljs.registerLanguage('sql', require('highlight.js/lib/languages/sql'))
-  hljs.registerLanguage('swift', require('highlight.js/lib/languages/swift'))
-  hljs.registerLanguage('xml', require('highlight.js/lib/languages/xml'))
-  hljs.registerLanguage('yaml', require('highlight.js/lib/languages/yaml'))
-  ;[].slice.call(document.querySelectorAll('pre code.hljs[data-lang]')).forEach(function (node) {
-    hljs.highlightBlock(node)
-  })
-})()
+hljs.registerLanguage('asciidoc', asciidoc)
+hljs.registerLanguage('bash', bash)
+hljs.registerLanguage('clojure', clojure)
+hljs.registerLanguage('cpp', cpp)
+hljs.registerLanguage('csharp', csharp)
+hljs.registerLanguage('css', css)
+hljs.registerLanguage('diff', diff)
+hljs.registerLanguage('dockerfile', dockerfile)
+hljs.registerLanguage('elixir', elixir)
+hljs.registerLanguage('go', go)
+hljs.registerLanguage('groovy', groovy)
+hljs.registerLanguage('haskell', haskell)
+hljs.registerLanguage('java', java)
+hljs.registerLanguage('javascript', javascript)
+hljs.registerLanguage('json', json)
+hljs.registerLanguage('julia', julia)
+hljs.registerLanguage('kotlin', kotlin)
+hljs.registerLanguage('lua', lua)
+hljs.registerLanguage('markdown', markdown)
+hljs.registerLanguage('nix', nix)
+hljs.registerLanguage('none', none)
+hljs.registerLanguage('objectivec', objectivec)
+hljs.registerLanguage('perl', perl)
+hljs.registerLanguage('php', php)
+hljs.registerLanguage('properties', properties)
+hljs.registerLanguage('puppet', puppet)
+hljs.registerLanguage('python', python)
+hljs.registerLanguage('ruby', ruby)
+hljs.registerLanguage('rust', rust)
+hljs.registerLanguage('scala', scala)
+hljs.registerLanguage('shell', shell)
+hljs.registerLanguage('sql', sql)
+hljs.registerLanguage('swift', swift)
+hljs.registerLanguage('xml', xml)
+hljs.registerLanguage('yaml', yaml)
+
+document.querySelectorAll('pre code.hljs[data-lang]').forEach((node) => {
+  hljs.highlightBlock(node)
+})

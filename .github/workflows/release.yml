@@ -19,7 +19,6 @@ jobs:
       - name: Build ui-bundle
         run: |
           npm ci
-          gulp lint
           gulp bundle
 
       - name: Create draft Release

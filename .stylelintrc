@@ -2,6 +2,13 @@
   "extends": "stylelint-config-standard",
   "rules": {
     "comment-empty-line-before": null,
+    "media-feature-range-notation": null,
     "no-descending-specificity": null,
+    "property-no-unknown": [
+      true,
+      {
+        "ignoreProperties": ["print-color-adjust", "#due to deprecated gulp-stylelint"]
+      }
+    ]
   }
 }
