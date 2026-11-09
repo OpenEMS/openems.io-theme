@@ -262,7 +262,8 @@
   font-size: inherit;
 }
 
-.doc td.tableblock > .content {
+.doc td.tableblock > .content,
+.doc td.tableblock > p.tableblock {
   word-wrap: anywhere; /* aka overflow-wrap; used when hyphens are disabled or aren't sufficient */
 }
 
